@@ -46,7 +46,7 @@ public class LocationControllers {
     /**
      * Find nearby drivers within SEARCH_RADIUS km
      */
-    @GetMapping("/nearby/drivers")
+    @PostMapping("/nearby/drivers")
     public ResponseEntity<List<DriverLocationDto>> getNearDriver(@RequestBody NearbyDriverRequestDto nearbyDriverRequestDto) {
         try {
 

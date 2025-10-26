@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.6'
+    id 'org.springframework.boot' version '3.4.3'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -10,7 +10,8 @@ description = 'UberProject_Location'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+        // ✅ Java 24 works fine now with updated dependencies
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -31,15 +32,33 @@ dependencies {
     }
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // ✅ Eureka client (Spring Cloud 2024 compatible)
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     // ✅ Jedis client
     implementation 'redis.clients:jedis:5.1.0'
+
+    // ✅ Updated Lombok for Java 21–24 compatibility
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+    // ✅ Configuration processor for @ConfigurationProperties
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // ✅ Dev tools
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // ✅ Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+    imports {
+        // ✅ Spring Cloud 2024.0.0 → compatible with Boot 3.4.x
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2024.0.0"
+    }
 }
 
 tasks.named('test') {
